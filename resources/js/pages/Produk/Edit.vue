@@ -8,7 +8,6 @@ import InputError from '@/components/InputError.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
 import { ArrowLeft } from 'lucide-vue-next';
-import { ref, watch, onMounted } from 'vue';
 
 interface Produk {
     id: number;
@@ -36,8 +35,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const displayHarga = ref('');
-
 const form = useForm({
     nama_produk: props.produk.nama_produk,
     deskripsi: props.produk.deskripsi || '',
@@ -46,35 +43,6 @@ const form = useForm({
     status: props.produk.status,
     _method: 'PUT',
 });
-
-// Format currency untuk tampilan
-const formatCurrency = (value: string | number) => {
-    const number = value.toString().replace(/[^0-9]/g, '');
-    if (!number) return '';
-    return 'Rp ' + new Intl.NumberFormat('id-ID').format(parseInt(number));
-};
-
-// Parse currency untuk value asli
-const parseCurrency = (value: string) => {
-    return value.replace(/[^0-9]/g, '');
-};
-
-// Set initial display harga
-onMounted(() => {
-    displayHarga.value = formatCurrency(props.produk.harga);
-});
-
-// Watch perubahan displayHarga
-watch(displayHarga, (newValue) => {
-    form.harga = parseCurrency(newValue);
-});
-
-const onHargaInput = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    const rawValue = parseCurrency(target.value);
-    form.harga = rawValue;
-    displayHarga.value = formatCurrency(target.value);
-};
 
 const submit = () => {
     form.post(`/produk/${props.produk.id}`);
@@ -119,17 +87,13 @@ const submit = () => {
 
                             <div class="space-y-2">
                                 <Label for="kategori">Kategori</Label>
-                                <select 
+                                <Input
                                     id="kategori"
                                     v-model="form.kategori"
-                                    class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                                    type="text"
+                                    placeholder="Masukkan kategori"
                                     required
-                                >
-                                    <option value="">Pilih Kategori</option>
-                                    <option value="makanan">Makanan</option>
-                                    <option value="minuman">Minuman</option>
-                                    <option value="lainnya">Lainnya</option>
-                                </select>
+                                />
                                 <InputError :message="form.errors.kategori" />
                             </div>
 
@@ -137,10 +101,11 @@ const submit = () => {
                                 <Label for="harga">Harga</Label>
                                 <Input
                                     id="harga"
-                                    v-model="displayHarga"
-                                    @input="onHargaInput"
-                                    type="text"
-                                    placeholder="Rp 0"
+                                    v-model="form.harga"
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    placeholder="0"
                                     required
                                 />
                                 <InputError :message="form.errors.harga" />
