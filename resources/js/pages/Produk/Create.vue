@@ -8,6 +8,7 @@ import InputError from '@/components/InputError.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
 import { ArrowLeft } from 'lucide-vue-next';
+import { ref } from 'vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -27,6 +28,44 @@ const form = useForm({
     kategori: '',
     status: 'aktif',
 });
+
+const kategoriOptions = [
+    { value: 'Makanan', label: 'Makanan' },
+    { value: 'Minuman', label: 'Minuman' },
+    { value: 'Lainnya', label: 'Lainnya' },
+];
+
+const formatCurrencyInput = (value: string) => {
+    // Remove non-numeric characters except decimal point
+    const numericValue = value.replace(/[^\d.]/g, '');
+    
+    // Convert to number and format as currency
+    const number = parseFloat(numericValue) || 0;
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    }).format(number);
+};
+
+const hargaDisplay = ref('');
+
+const updateHarga = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const value = target.value;
+    
+    // Remove currency formatting to get raw number
+    const numericValue = value.replace(/[^\d]/g, '');
+    form.harga = numericValue;
+    
+    // Update display value with currency formatting
+    if (numericValue) {
+        hargaDisplay.value = formatCurrencyInput(numericValue);
+    } else {
+        hargaDisplay.value = '';
+    }
+};
 
 const submit = () => {
     form.post('/produk');
@@ -71,13 +110,17 @@ const submit = () => {
 
                             <div class="space-y-2">
                                 <Label for="kategori">Kategori</Label>
-                                <Input
+                                <select 
                                     id="kategori"
                                     v-model="form.kategori"
-                                    type="text"
-                                    placeholder="Masukkan kategori"
+                                    class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                                     required
-                                />
+                                >
+                                    <option value="">Pilih Kategori</option>
+                                    <option v-for="kategori in kategoriOptions" :key="kategori.value" :value="kategori.value">
+                                        {{ kategori.label }}
+                                    </option>
+                                </select>
                                 <InputError :message="form.errors.kategori" />
                             </div>
 
@@ -85,11 +128,10 @@ const submit = () => {
                                 <Label for="harga">Harga</Label>
                                 <Input
                                     id="harga"
-                                    v-model="form.harga"
-                                    type="number"
-                                    step="0.01"
-                                    min="0"
-                                    placeholder="0"
+                                    :value="hargaDisplay"
+                                    @input="updateHarga"
+                                    type="text"
+                                    placeholder="Rp 0"
                                     required
                                 />
                                 <InputError :message="form.errors.harga" />

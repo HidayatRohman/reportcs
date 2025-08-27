@@ -36,7 +36,7 @@ class ProdukController extends Controller
             'nama_produk' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'harga' => 'required|numeric|min:0',
-            'kategori' => 'required|string|max:255',
+            'kategori' => 'required|in:Makanan,Minuman,Lainnya',
             'status' => 'required|in:aktif,nonaktif',
         ]);
 
@@ -75,7 +75,7 @@ class ProdukController extends Controller
             'nama_produk' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'harga' => 'required|numeric|min:0',
-            'kategori' => 'required|string|max:255',
+            'kategori' => 'required|in:Makanan,Minuman,Lainnya',
             'status' => 'required|in:aktif,nonaktif',
         ]);
 
