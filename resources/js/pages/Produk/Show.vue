@@ -11,7 +11,6 @@ interface Produk {
     nama_produk: string;
     deskripsi: string;
     harga: number;
-    stok: number;
     kategori: string;
     status: string;
     created_at: string;
@@ -100,11 +99,6 @@ const formatDate = (date: string) => {
                             <div>
                                 <h3 class="text-sm font-medium text-muted-foreground">Harga</h3>
                                 <p class="text-lg font-semibold text-green-600">{{ formatCurrency(produk.harga) }}</p>
-                            </div>
-                            
-                            <div>
-                                <h3 class="text-sm font-medium text-muted-foreground">Stok</h3>
-                                <p class="text-lg">{{ produk.stok }} unit</p>
                             </div>
                         </div>
                         

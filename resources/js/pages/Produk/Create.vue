@@ -24,7 +24,6 @@ const form = useForm({
     nama_produk: '',
     deskripsi: '',
     harga: '',
-    stok: '',
     kategori: '',
     status: 'aktif',
 });
@@ -94,19 +93,6 @@ const submit = () => {
                                     required
                                 />
                                 <InputError :message="form.errors.harga" />
-                            </div>
-
-                            <div class="space-y-2">
-                                <Label for="stok">Stok</Label>
-                                <Input
-                                    id="stok"
-                                    v-model="form.stok"
-                                    type="number"
-                                    min="0"
-                                    placeholder="0"
-                                    required
-                                />
-                                <InputError :message="form.errors.stok" />
                             </div>
 
                             <div class="space-y-2 md:col-span-2">

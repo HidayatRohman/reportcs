@@ -14,7 +14,6 @@ interface Produk {
     nama_produk: string;
     deskripsi: string;
     harga: number;
-    stok: number;
     kategori: string;
     status: string;
 }
@@ -40,7 +39,6 @@ const form = useForm({
     nama_produk: props.produk.nama_produk,
     deskripsi: props.produk.deskripsi || '',
     harga: props.produk.harga.toString(),
-    stok: props.produk.stok.toString(),
     kategori: props.produk.kategori,
     status: props.produk.status,
     _method: 'PUT',
@@ -111,19 +109,6 @@ const submit = () => {
                                     required
                                 />
                                 <InputError :message="form.errors.harga" />
-                            </div>
-
-                            <div class="space-y-2">
-                                <Label for="stok">Stok</Label>
-                                <Input
-                                    id="stok"
-                                    v-model="form.stok"
-                                    type="number"
-                                    min="0"
-                                    placeholder="0"
-                                    required
-                                />
-                                <InputError :message="form.errors.stok" />
                             </div>
 
                             <div class="space-y-2 md:col-span-2">

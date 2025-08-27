@@ -93,7 +93,6 @@ const deleteProduk = (id: number) => {
                                     </td>
                                     <td class="py-3 px-4">{{ produk.kategori }}</td>
                                     <td class="py-3 px-4">{{ formatCurrency(produk.harga) }}</td>
-                                    <td class="py-3 px-4">{{ produk.stok }}</td>
                                     <td class="py-3 px-4">
                                         <span :class="[
                                             'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
