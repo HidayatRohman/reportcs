@@ -16,7 +16,7 @@ class ProdukFactory extends Factory
      */
     public function definition(): array
     {
-        $kategori = ['Elektronik', 'Fashion', 'Makanan', 'Minuman', 'Olahraga', 'Buku', 'Kesehatan', 'Kecantikan'];
+        $kategori = ['makanan', 'minuman', 'lainnya'];
         
         return [
             'nama_produk' => $this->faker->words(3, true),
